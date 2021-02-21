@@ -74,4 +74,4 @@ Beer Api Listing
 
 
 ## MAD Score Card
-<img src="images/mad_score_card.png" width="350"/>
+<img src="images/mad_score_card.png" width="1200"/>
