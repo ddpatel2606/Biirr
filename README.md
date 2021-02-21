@@ -71,7 +71,3 @@ Beer Api Listing
 
 
 <img src="images/2.png" width="350"/>
-
-
-## Gif
-<img src="images/app.gif" width="350"/>
