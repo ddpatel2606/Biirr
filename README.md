@@ -1,4 +1,4 @@
-# BiirrDemo
+# Biirr
 
  - [Video on YouTube](https://youtu.be/RaFFAeY-SwI) 
  - [Download Apk](https://raw.githubusercontent.com/ddpatel2606/Biirr/master/apk/app-release.apk)
