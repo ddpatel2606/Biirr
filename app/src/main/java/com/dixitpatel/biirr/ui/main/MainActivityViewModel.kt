@@ -2,18 +2,23 @@ package com.dixitpatel.biirr.ui.main
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import com.dixitpatel.biirr.R
 import com.dixitpatel.biirr.constant.DEFAULT_IMAGE
 import com.dixitpatel.biirr.repository.MainViewRepository
 import com.squareup.picasso.Picasso
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
  *  Main Activity ViewModel : ViewModel
  */
-class MainActivityViewModel @Inject constructor(val mainViewRepository: MainViewRepository) : ViewModel()
+@VisibleForTesting
+@HiltViewModel
+class MainActivityViewModel @Inject constructor( val mainViewRepository: MainViewRepository) : ViewModel()
 {
     companion object {
 

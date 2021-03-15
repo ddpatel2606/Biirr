@@ -8,11 +8,13 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.ViewModel
 import com.dixitpatel.biirr.R
 import com.dixitpatel.biirr.utils.Utils
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 /**
  *  Detail Activity ViewModel : ViewModel
  */
+@HiltViewModel
 class DetailViewModel @Inject constructor() : ViewModel()
 {
     companion object {

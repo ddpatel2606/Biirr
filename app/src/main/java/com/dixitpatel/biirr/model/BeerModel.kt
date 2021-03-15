@@ -1,6 +1,7 @@
 package com.dixitpatel.biirr.model
 
 import android.os.Parcelable
+import androidx.annotation.VisibleForTesting
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
@@ -9,6 +10,7 @@ import org.jetbrains.annotations.NotNull
 /**
  *  Beer object with all necessary parameters
  */
+@VisibleForTesting
 @Parcelize
 data class BeerModel(
         @SerializedName("id")

@@ -2,7 +2,9 @@ package com.dixitpatel.biirr.ui.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
 import com.dixitpatel.biirr.R
 import com.dixitpatel.biirr.constant.DEFAULT_IMAGE
 import com.dixitpatel.biirr.databinding.ActivityDetailViewBinding
@@ -16,6 +18,9 @@ import com.dixitpatel.biirr.utils.Utils
 import com.github.florent37.picassopalette.PicassoPalette
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.components.ActivityComponent
 import java.lang.Exception
 
 import javax.inject.Inject
@@ -24,9 +29,11 @@ import javax.inject.Inject
  *  Detail Activity : Detail View of beer
  *  It will open after clicking on beer Item
  */
-class DetailViewActivity : BaseActivity<DetailViewModel>()
+
+@AndroidEntryPoint
+class DetailViewActivity : BaseActivity()
 {
-    private val binding: ActivityDetailViewBinding by binding(R.layout.activity_detail_view)
+    val binding: ActivityDetailViewBinding by binding(R.layout.activity_detail_view)
 
     companion object
     {
@@ -34,13 +41,12 @@ class DetailViewActivity : BaseActivity<DetailViewModel>()
          const val EXTRA_IMAGE_TRANSITION_NAME = "image_trans"
     }
 
-    private val selectedBeerObj : BeerModel? by extraNotNull(SELECTION_BEER_MODEL)
+    val selectedBeerObj : BeerModel? by extraNotNull(SELECTION_BEER_MODEL)
 
     @Inject
     lateinit var apiInterface : ApiInterface
 
-    @Inject
-    lateinit var models: DetailViewModel
+    private val models: DetailViewModel by viewModels()
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,11 +97,6 @@ class DetailViewActivity : BaseActivity<DetailViewModel>()
         }
     }
 
-
-    // Bind ViewModel
-    override fun getViewModel(): DetailViewModel {
-        return models
-    }
 
 }
 

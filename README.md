@@ -1,3 +1,12 @@
+# Update : 15th March 2021
+branch : develop_hilt_di
+
+- Migrated Dagger 2 to Hilt Dependency Injection.
+- Implemented Hilt UI test cases.
+- [Hilt dependency injection](https://developer.android.com/training/dependency-injection/hilt-android)
+
+
+
 # Biirr
 
  - [Video on YouTube](https://youtu.be/RaFFAeY-SwI) 
