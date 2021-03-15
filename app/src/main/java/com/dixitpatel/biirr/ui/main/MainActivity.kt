@@ -3,6 +3,8 @@ package com.dixitpatel.biirr.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
+import androidx.annotation.VisibleForTesting
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -25,6 +27,7 @@ import com.dixitpatel.biirr.utils.Alerts
 import com.dixitpatel.biirr.utils.CommonAdapter
 import com.dixitpatel.biirr.utils.Utils
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,20 +38,18 @@ import javax.inject.Inject
 /**
  *  Main Activity : beer Listing Activity
  */
-class MainActivity : BaseActivity<MainActivityViewModel?>(), SwipeRefreshLayout.OnRefreshListener
+@VisibleForTesting
+@AndroidEntryPoint
+class MainActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener
 {
     // Binding view and initialized as lazy
-    private val binding: ActivityMainBinding by binding(R.layout.activity_main)
+    @VisibleForTesting
+    val binding: ActivityMainBinding by binding(R.layout.activity_main)
 
-    @Inject
-    lateinit var model: MainActivityViewModel
+    val model: MainActivityViewModel by viewModels()
 
     @Inject
     lateinit var apiInterface : ApiInterface
-
-    override fun getViewModel(): MainActivityViewModel {
-        return model
-    }
 
     private var backPressedTime: Long = 0
 

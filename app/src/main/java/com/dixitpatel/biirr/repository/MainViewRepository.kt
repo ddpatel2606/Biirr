@@ -1,5 +1,6 @@
 package com.dixitpatel.biirr.repository
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import com.dixitpatel.biirr.constant.API_KEY
 import com.dixitpatel.biirr.model.BeerResponse
@@ -17,6 +18,7 @@ import javax.inject.Inject
 /**
  *  MainViewRepository class to call Main beer API.
  */
+@VisibleForTesting
 class MainViewRepository @Inject constructor() : Repository
 {
     private val beerApiResponse = MutableLiveData<APIRequestResponseHandler<BeerResponse?>>()

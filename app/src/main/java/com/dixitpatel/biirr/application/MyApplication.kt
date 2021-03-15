@@ -1,37 +1,19 @@
 package com.dixitpatel.biirr.application
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.dixitpatel.biirr.BuildConfig
-import com.dixitpatel.biirr.di.components.DaggerMainAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.support.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
 /**
  * MyApplication class that provides functionality of Dagger injectors.
  * */
-open class MyApplication : DaggerApplication()
+@HiltAndroidApp
+class MyApplication : Application()
 {
-    companion object {
-        @JvmStatic
-        @get:Synchronized
-        lateinit var instance: MyApplication
-
-        init {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        }
-    }
-
-    /**
-     * Bind Android Injectors with DaggerComponent
-     */
-    override fun applicationInjector(): AndroidInjector<MyApplication?>? {
-        return DaggerMainAppComponent.factory().create(this)
-    }
-
     override fun onCreate() {
         super.onCreate()
-        instance = this
 
         // If the build is on debug mode from Android studio then Logcat printed otherwise not to display.
         if (BuildConfig.DEBUG)

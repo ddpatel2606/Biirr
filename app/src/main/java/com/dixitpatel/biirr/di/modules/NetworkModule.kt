@@ -2,13 +2,18 @@ package com.dixitpatel.biirr.di.modules
 
 import android.content.Context
 import com.dixitpatel.biirr.R
+import com.dixitpatel.biirr.application.MyApplication
 import com.dixitpatel.biirr.constant.BASE_URL
 import com.dixitpatel.biirr.constant.HTTP_REQUEST_TIMEOUT
 import com.dixitpatel.biirr.network.ApiInterface
+import com.dixitpatel.biirr.utils.NullableTypAdapterFactory
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.squareup.picasso.OkHttp3Downloader
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,78 +26,51 @@ import javax.inject.Singleton
 /**
  *  All Network Modules are defined here so they initialized at compileTime.
  */
+
 @Module
-class NetworkModule {
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+
 
     // Interceptors are used for displaying logs of API.
     @Provides
     @Singleton
-    fun providesHttpLoggingInterceptor(context: Context): HttpLoggingInterceptor {
+    fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor().apply {
-            level = getOkHttpLogLevel(context.getString(R.string.okhttp_log_level))
-        }
-    }
-
-    // Log levels are used for display particular information.
-    private fun getOkHttpLogLevel(level: String?): HttpLoggingInterceptor.Level {
-        return when (level) {
-            HttpLoggingInterceptor.Level.NONE.toString() -> HttpLoggingInterceptor.Level.NONE
-            HttpLoggingInterceptor.Level.BASIC.toString() -> HttpLoggingInterceptor.Level.BASIC
-            HttpLoggingInterceptor.Level.HEADERS.toString() -> HttpLoggingInterceptor.Level.HEADERS
-            HttpLoggingInterceptor.Level.BODY.toString() -> HttpLoggingInterceptor.Level.BODY
-            else -> HttpLoggingInterceptor.Level.NONE
+            level = HttpLoggingInterceptor.Level.BODY
         }
     }
 
     // OkHttpClient for Retrofit and Picasso
-    @Singleton
     @Provides
-    fun providesClient(cache: Cache?, loggingInterceptor: HttpLoggingInterceptor?): OkHttpClient {
+    @Singleton
+    fun providesClient(loggingInterceptor: HttpLoggingInterceptor?): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(HTTP_REQUEST_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(HTTP_REQUEST_TIMEOUT, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor!!)
-            .cache(cache)
             .build()
     }
 
 
-    // Okhttp Cache file.
-    @Provides
-    @Singleton
-    fun file(app: Context): File {
-        val file = File(app.applicationContext.cacheDir, "okhttp_cache")
-        file.mkdirs()
-        return file
-    }
-
-    // Okhttp Cache file size.
-    @Provides
-    @Singleton
-    fun cache(file: File?): Cache {
-        return Cache(file!!, 10 * 1000 * 1000) //10 MB
-    }
 
     // Okhttp Downloader.
     @Provides
-    @Singleton
     fun okHttpDownloader(okHttpClient: OkHttpClient?): OkHttp3Downloader {
         return OkHttp3Downloader(okHttpClient)
     }
 
     // Retrofit for Network call Attached with GSONConverterFactory
-    @Singleton
     @Provides
-    fun provideRetrofit(cache: Cache?, loggingInterceptor: HttpLoggingInterceptor?, gson: Gson): Retrofit {
+    fun provideRetrofit(loggingInterceptor: HttpLoggingInterceptor?): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(providesClient(cache, loggingInterceptor))
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().registerTypeAdapterFactory(NullableTypAdapterFactory()).create()))
+            .client(providesClient(loggingInterceptor))
             .build()
     }
 
     // Retrofit interface for all API call.
-    @Singleton
     @Provides
     fun provideApiService(retrofit: Retrofit): ApiInterface {
         return retrofit.create(ApiInterface::class.java)
